@@ -1,0 +1,28 @@
+{
+  "name": "vite-plugin-reload-cdn",
+  "version": "0.0.2",
+  "description": "前端CDN容灾（资源重载）",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pipihua666/vite-plugin-reload-cdn.git"
+  },
+  "types": "types",
+  "scripts": {
+    "dev": "tsc -w"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "keywords": [
+    "Vite",
+    "plugin",
+    "CDN"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
