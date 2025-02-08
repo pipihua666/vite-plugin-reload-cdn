@@ -88,10 +88,24 @@ export function dynamicImport(
   }
 
   /**
+   * import() 加载资源时添加查询参数
+   */
+  function addQueryParamToImport(code = '', param = 't=' + Date.now()) {
+    return code.replace(/import\(['"`]([^'"]+)['"`]\)/g, (match, path) => {
+      const separator = path.includes('?') ? '&' : '?' // 判断是否已经有查询参数
+      return `import('${path}${separator}${param}')` // 直接替换原字符串
+    })
+  }
+
+  /**
    * 深拷贝函数
    */
-  function deepCopyFunction<T extends (...args: any[]) => any>(fn: T): T {
-    return new Function('return ' + fn.toString())() as T
+  function deepCopyFunction<T extends (...args: any[]) => any>(
+    fn: T,
+    isRetry = false
+  ): T {
+    const func = isRetry ? addQueryParamToImport(fn.toString()) : fn.toString()
+    return new Function('return ' + func)() as T
   }
 
   /**
@@ -100,12 +114,12 @@ export function dynamicImport(
    */
   function retry(fn: () => Promise<unknown>, retries = 2, delay = 1000) {
     let attempt = 0
-    function attemptRetry(): Promise<unknown> {
-      const func = deepCopyFunction(fn)
+    function attemptRetry(isRetry = false): Promise<unknown> {
+      const func = deepCopyFunction(fn, isRetry)
       return func().catch((error) => {
         if (++attempt < retries) {
-          return new Promise((resolve) => setTimeout(resolve, delay)).then(
-            attemptRetry
+          return new Promise((resolve) => setTimeout(resolve, delay)).then(() =>
+            attemptRetry(true)
           )
         } else {
           return Promise.reject(error)

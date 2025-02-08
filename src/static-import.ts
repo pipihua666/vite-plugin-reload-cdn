@@ -3,8 +3,7 @@ import type { Options } from './index'
 export function staticImport(fallbackMap: Options['map']) {
   enum LinkEnum {
     SCRIPT = 'SCRIPT',
-    LINK = 'LINK',
-    IMG = 'img'
+    LINK = 'LINK'
   }
 
   interface Fallback {
@@ -19,7 +18,8 @@ export function staticImport(fallbackMap: Options['map']) {
       : url
     if (type === LinkEnum.SCRIPT) {
       el = document.createElement('script')
-      el.src = urlReplaced
+      el.src = urlReplaced + '?t=' + Date.now()
+      el.type = 'module'
     } else if (type === LinkEnum.LINK) {
       el = document.createElement('link')
       el.setAttribute('rel', 'stylesheet')

@@ -78,6 +78,6 @@ window.onerror 和 window.addEventListener('error')的区别
 
 ## 动态资源
 
-> 手动通过 document.createElement('script') 加载资源
+> 手动通过 document.createElement('script') 加载的资源
 
 手动处理资源重载逻辑
